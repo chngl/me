@@ -13,7 +13,7 @@ function BlogPost({ post }) {
       className="w-full flex flex-col md:flex-row cursor-pointer hover:bg-gray-50"
       onClick={() => {
         ReactGA.initialize(
-          process.env.GA_TRACKING_ID,
+          process.env.NEXT_PUBLIC_GA_TRACKING_ID,
           {
             debug: true,
             gaOptions: {

@@ -9,9 +9,8 @@ export default function Home({ posts }) {
 
   useEffect(() => {
     // add page view for tracking the usage
-    ReactGA.initialize(process.env.GA_TRACKING_ID);
+    ReactGA.initialize(process.env.NEXT_PUBLIC_GA_TRACKING_ID);
     ReactGA.pageview('home');
-
   }, []);
 
   return (
