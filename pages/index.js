@@ -17,7 +17,7 @@ export default function Home({ posts }) {
   return (
     <div className="w-full">
       <Head>
-        <title>Chang's Playground</title>
+        <title>Chang Playground</title>
         <meta name="description" content="Chang Liu, full stack engineer" />
       </Head>
       <div className="flex flex-col h-screen w-full font-mono items-center">
