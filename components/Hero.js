@@ -61,7 +61,7 @@ export default function Hero() {
           <FaGithub className="text-gray-400" />
         </a>
       </div>
-      <div className="text-gray-500 my-4">
+      <div className="text-gray-500 my-4" onClick={() => typed.current.reset()}>
         <span ref={el} />
       </div>
     </div>
