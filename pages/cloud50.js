@@ -77,7 +77,6 @@ const RESOURCES = [
 ];
 
 export default function Cloud50({ companies }) {
-  console.log(companies);
   const canvasRef = useRef(null);
   let jelloRef = useRef(null);
   useEffect(() => {
@@ -96,7 +95,7 @@ export default function Cloud50({ companies }) {
 
   return (
     <div className="w-full h-screen flex flex-col md:flex-row justify-center max-w-screen-lg m-auto items-center font-mono">
-      <div className="w-full md:w-1/3 md:h-screen flex flex-col justify-center items-center">
+      <div className="w-full my-12 md:w-1/3 md:h-screen flex flex-col justify-center items-center">
         <div className="text-xl my-4">
           {STORY_SETTINGS[story].title}
         </div>
@@ -143,7 +142,7 @@ export default function Cloud50({ companies }) {
       </div>
       <div className="w-full flex-grow md:w-2/3 md:h-screen relative overflow-scroll" ref={canvasRef} />
       <Link href="/">
-        <div className="absolute top-0 left-0 m-8 flex items-center cursor-pointer">
+        <div className="absolute top-0 left-0 m-6 flex items-center cursor-pointer">
           <FaHome className="text-gray-400" />
           <div className="m-2">Home</div>
         </div>
