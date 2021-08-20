@@ -1,3 +1,4 @@
+import { AiFillPushpin } from 'react-icons/ai';
 import Image from 'next/image'
 import React from 'react'
 import ReactGA from 'react-ga'
@@ -27,7 +28,11 @@ function BlogPost({ post }) {
           label: post.fields.title,
         });
         if (post.fields.url != null) {
-          window.open(post.fields.url, '_blank').focus();
+          if (post.fields.type === 'page') {
+            window.location.replace(post.fields.url);
+          } else {
+            window.open(post.fields.url, '_blank').focus();
+          }
         }
       }}>
       <div className="flex-shrink-0 relative w-full h-48 md:h-auto md:w-1/3">
@@ -40,8 +45,9 @@ function BlogPost({ post }) {
         <div className="text-gray-500">
           {post.fields.desc}
         </div>
-        <div className="text-gray-300">
+        <div className="flex text-gray-300 justify-between my-2">
           {dt.toDateString()}
+          {post.fields.pined ? <AiFillPushpin /> : null}
         </div>
       </div>
     </div>
@@ -49,13 +55,20 @@ function BlogPost({ post }) {
 }
 
 export default function BlogPosts({ posts }) {
+  const sorted = posts.sort((a, b) => {
+    if (a.fields.pined) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
   return (
     <div className="mx-2 flex flex-col items-center my-8 max-w-screen-lg w-full w-2/3">
       <div className="text-gray-500 my-4">
         ☕️ blogs & projects ⚒️
       </div>
       <div className="divide-y divide-fuchsia-300">
-        {posts.map(post => <BlogPost key={post.id} post={post} />)}
+        {sorted.map(post => <BlogPost key={post.id} post={post} />)}
       </div>
       <div className="text-gray-500 my-4">
         More to come soon ...

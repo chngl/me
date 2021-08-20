@@ -29,5 +29,6 @@ export default function Home({ posts }) {
 
 export async function getServerSideProps() {
   const posts = await getPublishedPosts();
+  console.log(posts);
   return { props: { posts } };
 }
