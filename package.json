@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chngl/jellojs": "^1.0.0",
+    "@chngl/jellojs": "1.0.5",
     "airtable": "^0.11.1",
     "canvas-confetti": "^1.4.0",
     "dotenv": "^10.0.0",

@@ -53,9 +53,9 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@chngl/jellojs@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@chngl/jellojs/-/jellojs-1.0.1.tgz#f84f4e592be9a8237fa32f576267954c8ba8a17c"
+"@chngl/jellojs@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@chngl/jellojs/-/jellojs-1.0.5.tgz#4e29d17df8c58224d8f3af46de1b44ea09ba9ceb"
   dependencies:
     animejs "^3.2.1"
     d3 "^7.0.1"

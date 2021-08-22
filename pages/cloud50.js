@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { FaHome } from "react-icons/fa"
+import Image from 'next/image'
 import Jello from '@chngl/jellojs'
 import Link from 'next/link'
+import { MdClose } from 'react-icons/md'
 import ReactGA from 'react-ga'
 import { getCompanies } from '../pages/api/getCompanies'
 
@@ -14,7 +16,7 @@ const STORY_SETTINGS = [
     `,
     button: 'Start',
     action: (jello) => {
-      jello.setSizeBy('rank').setClusterBy(null).setFilterBy(null).render();
+      jello.sizeBy('rank').clusterBy(null).filterBy(null).render();
     },
   },
   {
@@ -25,7 +27,7 @@ const STORY_SETTINGS = [
     `,
     button: 'Next',
     action: (jello) => {
-      jello.setClusterBy('headquarter').render();
+      jello.clusterBy('headquarter').render();
     }
   },
   {
@@ -35,7 +37,7 @@ const STORY_SETTINGS = [
     `,
     button: 'Next',
     action: (jello) => {
-      jello.setClusterBy('industry').render();
+      jello.clusterBy('industry').render();
     }
   },
   {
@@ -46,7 +48,7 @@ const STORY_SETTINGS = [
     `,
     button: 'Next',
     action: (jello) => {
-      jello.setFilterBy({ 'industry': ['Fintech'] }).setClusterBy('sub_industry').render();
+      jello.filterBy({ 'industry': ['Fintech'] }).clusterBy('sub_industry').render();
     }
   },
   {
@@ -56,7 +58,7 @@ const STORY_SETTINGS = [
     `,
     button: 'Next',
     action: (jello) => {
-      jello.setFilterBy(null).setSizeBy('valuation').setSortBy({ dim: 'valuation', order: 'desc' }).render();
+      jello.filterBy(null).sizeBy('valuation').sortBy({ dim: 'valuation', order: 'desc' }).render();
     }
   },
 ];
@@ -76,6 +78,60 @@ const RESOURCES = [
   },
 ];
 
+const FIELDS = [{
+  key: 'year_founded',
+  label: 'Year Founded',
+}, {
+  key: 'valuation',
+  label: 'Valuation(B)',
+}, {
+  key: 'employees',
+  label: '#Employees',
+}, {
+  key: 'industry',
+  label: 'Industry',
+}, {
+  key: 'sub_industry',
+  label: 'Sub Industry',
+}, {
+  key: 'headquarter',
+  label: 'Headquarter',
+}
+];
+
+function CompanyCard({ data, top, left, onClose }) {
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <div className="shadow absolute bg-white py-6 px-4 flex flex-col" style={{ top, left }}>
+      <div className="absolute text-gray-500 cursor-pointer" style={{ top: 20, right: 20 }} onClick={() => {
+        onClose();
+      }}>
+        <MdClose />
+      </div>
+      <div className="text-l m-auto flex flex-col items-center">
+        <Image src={data.logo} alt="profile" width={50} height={50} />
+        <div>
+          {data.company}
+        </div>
+      </div>
+      <div className="border-t w-full my-2" />
+      {FIELDS.map(field => {
+        return (
+          <div key={field} className="flex m-2">
+            <div className="w-36 text-gray-300 flex justify-end mx-2">
+              {field.label}
+            </div>
+            <div className="w-48 text-gray-500">{data[field.key]}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Cloud50({ companies }) {
   const canvasRef = useRef(null);
   let jelloRef = useRef(null);
@@ -85,13 +141,31 @@ export default function Cloud50({ companies }) {
     ReactGA.initialize(process.env.NEXT_PUBLIC_GA_TRACKING_ID);
     ReactGA.pageview('cloud50');
 
-    const jello = new Jello(canvasRef.current, companies, {});
-    jello.setDisplayImageBy('logo');
+    const jello = new Jello(
+      canvasRef.current,
+      companies,
+      {
+        displayImageByDim: 'logo',
+        onClick: (event, data) => {
+          event.stopPropagation();
+          setShowCard(true);
+          setTop(event.pageY);
+          setLeft(event.pageX);
+          setData(data);
+        },
+        onCanvasClick: () => setShowCard(false),
+      },
+    );
+    jello.render();
     STORY_SETTINGS[0].action(jello);
     jelloRef.current = jello;
   }, []);
 
   const [story, setStory] = useState(0);
+  const [showCard, setShowCard] = useState(false);
+  const [top, setTop] = useState(0);
+  const [left, setLeft] = useState(0);
+  const [data, setData] = useState(null);
 
   return (
     <div className="w-full h-screen flex flex-col md:flex-row justify-center max-w-screen-lg m-auto items-center font-mono">
@@ -147,6 +221,7 @@ export default function Cloud50({ companies }) {
           <div className="m-2">Home</div>
         </div>
       </Link>
+      {showCard ? <CompanyCard data={data} top={top} left={left} onClose={() => setShowCard(false)} /> : null}
     </div>
   )
 }
