@@ -42,10 +42,10 @@ function BlogPost({ post }) {
         <div className="text-2xl my-8">
           {post.fields.title}
         </div>
-        <div className="text-gray-500">
+        <div className="text-gray-500 text-sm">
           {post.fields.desc}
         </div>
-        <div className="flex text-gray-300 justify-between my-2">
+        <div className="flex text-gray-300 justify-between my-2 text-sm">
           {dt.toDateString()}
           {post.fields.pined ? <AiFillPushpin /> : null}
         </div>

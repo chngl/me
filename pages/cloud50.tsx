@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
+import Button from '../components/Button'
 import { FaHome } from "react-icons/fa"
 import Image from 'next/image'
 import Jello from '@chngl/jellojs'
@@ -7,6 +8,29 @@ import Link from 'next/link'
 import { MdClose } from 'react-icons/md'
 import ReactGA from 'react-ga'
 import { getCompanies } from '../pages/api/getCompanies'
+
+type Company = {
+  "id": string,
+  "funding": number,
+  "company": string,
+  "headquarter": string,
+  "employees": number,
+  "year_founded": number,
+  "years_since_founded": number,
+  "years_since_founded_category": string,
+  "logo": string,
+};
+
+type Cloud50Props = {
+  companies: Array<Company>,
+};
+
+type CardProps = {
+  data: Company,
+  top: number,
+  left: number,
+  onClose: () => void,
+};
 
 const STORY_SETTINGS = [
   {
@@ -76,6 +100,10 @@ const RESOURCES = [
     'title': 'Create Inteactive Data Stories with Jellojs',
     'link': 'https://www.npmjs.com/package/@chngl/jellojs',
   },
+  {
+    'title': 'Please let me know w',
+    'link': '#',
+  },
 ];
 
 const FIELDS = [{
@@ -99,11 +127,7 @@ const FIELDS = [{
 }
 ];
 
-function CompanyCard({ data, top, left, onClose }) {
-  if (!data) {
-    return null;
-  }
-
+function CompanyCard({ data, top, left, onClose }: CardProps) {
   return (
     <div className="shadow absolute bg-white py-6 px-4 flex flex-col" style={{ top, left }}>
       <div className="absolute text-gray-500 cursor-pointer" style={{ top: 20, right: 20 }} onClick={() => {
@@ -120,7 +144,7 @@ function CompanyCard({ data, top, left, onClose }) {
       <div className="border-t w-full my-2" />
       {FIELDS.map(field => {
         return (
-          <div key={field} className="flex m-2">
+          <div key={field.label} className="flex m-2">
             <div className="w-36 text-gray-300 flex justify-end mx-2">
               {field.label}
             </div>
@@ -132,9 +156,9 @@ function CompanyCard({ data, top, left, onClose }) {
   );
 }
 
-export default function Cloud50({ companies }) {
-  const canvasRef = useRef(null);
-  let jelloRef = useRef(null);
+export default function Cloud50({ companies }: Cloud50Props) {
+  const canvasRef = useRef<HTMLDivElement | null>(null);
+  let jelloRef = useRef<Jello<Company> | null>(null);
   useEffect(() => {
 
     // logging
@@ -168,7 +192,7 @@ export default function Cloud50({ companies }) {
   const [data, setData] = useState(null);
 
   return (
-    <div className="w-full h-screen flex flex-col md:flex-row justify-center max-w-screen-lg m-auto items-center font-mono">
+    <div className="w-full h-screen flex flex-col md:flex-row justify-center max-w-screen-lg m-auto items-center font-mono overflow-scroll">
       <div className="w-full my-12 md:w-1/3 md:h-screen flex flex-col justify-center items-center">
         <div className="text-xl my-4">
           {STORY_SETTINGS[story].title}
@@ -179,12 +203,10 @@ export default function Cloud50({ companies }) {
         {
           story === STORY_SETTINGS.length - 1 ? (
             <>
-              <div className="shadow py-2 px-4 bg-blue-50 hover:bg-blue-100 cursor-pointer" onClick={() => {
+              <Button label="Restart" onClick={() => {
                 STORY_SETTINGS[0].action && STORY_SETTINGS[0].action(jelloRef.current);
                 setStory(0);
-              }}>
-                Restart
-              </div>
+              }} />
               <div className="flex flex-col my-8 items-start">
                 <div className="text-xl my-4 ">
                   Resources
@@ -203,14 +225,14 @@ export default function Cloud50({ companies }) {
               </div>
             </>
           ) : (
-            <div className="shadow py-2 px-4 bg-blue-50 hover:bg-blue-100 cursor-pointer" onClick={() => {
-              if (story + 1 < STORY_SETTINGS.length) {
-                STORY_SETTINGS[story + 1].action && STORY_SETTINGS[story + 1].action(jelloRef.current);
-                setStory(story + 1);
-              }
-            }}>
-              {STORY_SETTINGS[story].button}
-            </div>
+            <Button
+              label={STORY_SETTINGS[story].button}
+              onClick={() => {
+                if (story + 1 < STORY_SETTINGS.length) {
+                  STORY_SETTINGS[story + 1].action && STORY_SETTINGS[story + 1].action(jelloRef.current);
+                  setStory(story + 1);
+                }
+              }} />
           )
         }
       </div>
