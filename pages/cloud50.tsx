@@ -128,6 +128,9 @@ const FIELDS = [{
 ];
 
 function CompanyCard({ data, top, left, onClose }: CardProps) {
+  if (!data) {
+    return null;
+  }
   return (
     <div className="shadow absolute bg-white py-6 px-4 flex flex-col" style={{ top, left }}>
       <div className="absolute text-gray-500 cursor-pointer" style={{ top: 20, right: 20 }} onClick={() => {
