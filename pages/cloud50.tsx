@@ -204,6 +204,7 @@ export default function Cloud50({ companies }: Cloud50Props) {
           story === STORY_SETTINGS.length - 1 ? (
             <>
               <Button label="Restart" onClick={() => {
+                jelloRef.current && jelloRef.current.reset().render();
                 STORY_SETTINGS[0].action && STORY_SETTINGS[0].action(jelloRef.current);
                 setStory(0);
               }} />
