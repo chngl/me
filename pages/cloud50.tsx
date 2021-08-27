@@ -77,12 +77,29 @@ const STORY_SETTINGS = [
   },
   {
     title: 'Valuation',
-    details: `Finally, let's take a look at their valuation (in Billions).
+    details: `Now, let's take a look at their valuation (in Billions).
       Among all the companies, Stripe has been doing really well in recent years and it has reached an exceptional 95B in valuation! Scroll to the right to see more.
     `,
     button: 'Next',
     action: (jello) => {
       jello.filterBy(null).sizeBy('valuation').sortBy({ dim: 'valuation', order: 'desc' }).render();
+    }
+  },
+  {
+    title: 'Valuation by Company Size',
+    details: `
+      If we visualize the valuation by the number of employees for the comapnies in internet software industry, Figma stood out.
+      They reached a valuation at 10B while still remain relatively small.
+    `,
+    button: 'Next',
+    action: (jello) => {
+      jello
+        .filterBy({'industry': ['Internet software & services']})
+        .plotBy({
+          x: { dim: 'employees', order: 'asc' },
+          y: { dim: 'valuation', order: 'asc' },
+          getCircleSize: (_: Company) => 25,
+        }).render();
     }
   },
 ];
@@ -195,7 +212,7 @@ export default function Cloud50({ companies }: Cloud50Props) {
   const [data, setData] = useState(null);
 
   return (
-    <div className="w-full h-screen flex flex-col md:flex-row justify-center max-w-screen-lg m-auto items-center font-mono overflow-scroll">
+    <div className="w-full h-screen flex flex-col md:flex-row justify-center max-w-screen-lg m-auto items-center font-mono">
       <div className="w-full my-12 md:w-1/3 md:h-screen flex flex-col justify-center items-center">
         <div className="text-xl my-4">
           {STORY_SETTINGS[story].title}
@@ -240,7 +257,7 @@ export default function Cloud50({ companies }: Cloud50Props) {
           )
         }
       </div>
-      <div className="w-full flex-grow md:w-2/3 md:h-screen relative overflow-scroll" ref={canvasRef} />
+      <div className="w-full flex-grow md:w-2/3 md:h-screen relative" ref={canvasRef} style={{maxHeight: 700}}/>
       <Link href="/">
         <div className="absolute top-0 left-0 m-6 flex items-center cursor-pointer">
           <FaHome className="text-gray-400" />
