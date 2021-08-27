@@ -203,6 +203,7 @@ export default function Cloud50({ companies }: Cloud50Props) {
     jello.render();
     STORY_SETTINGS[0].action(jello);
     jelloRef.current = jello;
+    window.onresize = () => jello.updateWidthHeight().render();
   }, []);
 
   const [story, setStory] = useState(0);
@@ -257,7 +258,7 @@ export default function Cloud50({ companies }: Cloud50Props) {
           )
         }
       </div>
-      <div className="w-full flex-grow md:w-2/3 md:h-screen relative" ref={canvasRef} style={{maxHeight: 700}}/>
+      <div className="w-full flex-grow md:w-2/3 md:h-screen relative overflow-x-scroll" ref={canvasRef} style={{maxHeight: 700}}/>
       <Link href="/">
         <div className="absolute top-0 left-0 m-6 flex items-center cursor-pointer">
           <FaHome className="text-gray-400" />
