@@ -89,7 +89,7 @@ const STORY_SETTINGS = [
     title: 'Valuation by Company Size',
     details: `
       If we visualize the valuation by the number of employees for the comapnies in internet software industry, Figma stood out.
-      They reached a valuation at 10B while still remain relatively small.
+      They reached a valuation of 10B while still remain relatively small.
     `,
     button: 'Next',
     action: (jello) => {
@@ -116,10 +116,6 @@ const RESOURCES = [
   {
     'title': 'Create Inteactive Data Stories with Jellojs',
     'link': 'https://www.npmjs.com/package/@chngl/jellojs',
-  },
-  {
-    'title': 'Please let me know w',
-    'link': '#',
   },
 ];
 
