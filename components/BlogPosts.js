@@ -4,11 +4,6 @@ import React from 'react'
 import ReactGA from 'react-ga'
 
 function BlogPost({ post }) {
-  const images = post.fields.illustration;
-  const thumbnails = images && images.length ? images[0].thumbnails.large : { url: null };
-  const { url: picUrl } = thumbnails;
-  const dt = new Date(post.fields.date);
-
   return (
     <div
       className="w-full flex flex-col md:flex-row cursor-pointer hover:bg-gray-50"
@@ -36,7 +31,7 @@ function BlogPost({ post }) {
         }
       }}>
       <div className="flex-shrink-0 relative w-full h-48 md:h-auto md:w-1/3">
-        <Image src={picUrl} layout="fill" objectFit="cover" alt="cover" />
+        <Image src={post.fields.picUrl} layout="fill" objectFit="cover" alt="cover" />
       </div>
       <div className="flex flex-col justify-center p-8">
         <div className="text-2xl my-8">
@@ -46,7 +41,7 @@ function BlogPost({ post }) {
           {post.fields.desc}
         </div>
         <div className="flex text-gray-300 justify-between my-2 text-sm">
-          {dt.toDateString()}
+          {(new Date(post.fields.date)).toDateString()}
           {post.fields.pined ? <AiFillPushpin /> : null}
         </div>
       </div>
