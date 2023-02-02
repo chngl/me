@@ -30,9 +30,6 @@ function BlogPost({ post }) {
           }
         }
       }}>
-      <div className="flex-shrink-0 relative w-full h-48 md:h-auto md:w-1/3">
-        <Image src={post.fields.picUrl} layout="fill" objectFit="cover" alt="cover" />
-      </div>
       <div className="flex flex-col justify-center p-8">
         <div className="text-2xl my-8">
           {post.fields.title}
